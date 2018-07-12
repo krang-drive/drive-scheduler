@@ -1,19 +1,17 @@
 {
-  "name": "drive-scheduler",
+  "name": "drivescheduler",
   "version": "0.0.0",
-  "description": "",
-  "main": "server.js",
+  "private": true,
   "scripts": {
-    "test": "echo true"
+    "start": "node ./bin/www"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/krang-drive/drive-scheduler.git"
-  },
-  "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/krang-drive/drive-scheduler/issues"
-  },
-  "homepage": "https://github.com/krang-drive/drive-scheduler#readme"
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.0",
+    "node-rest-client": "^3.1.0"
+  }
 }
