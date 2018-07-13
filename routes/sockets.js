@@ -7,6 +7,8 @@ function initServer(server, options) {
 
     io.on('connection', function (socket) {
 
+        console.log('someone connected');
+
         //{driverID: string} -> void
         socket.on('join', function(data){
             socket.driverID = data.driverID;
