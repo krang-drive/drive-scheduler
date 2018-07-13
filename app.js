@@ -9,7 +9,7 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('./routes/sockets');
 
-io.initServer(server, {});
+io.initServer(server, {origins: '*:*'});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
