@@ -42,7 +42,7 @@ function _getGenericStore(path, callback, id){
 function getDrivers(id, callback){
     if(typeof id === 'function')
         return _getGenericStore('/drivers', id, null);
-    return _getGenericStore('/drivers', callback, id)
+    return _getGenericStore('/drivers', callback, id);
 }
 
 function getRoutes(id, callback){

@@ -1,6 +1,6 @@
 function Driver(driverID, curLoc, online, carSize, money){
     this.driverID = driverID;
-    this.curLoc = curLoc;
+    this.currentLocation = curLoc;
     this.online = online;
     this.carSize = carSize;
     this.money = money;
