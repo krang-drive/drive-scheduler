@@ -3,7 +3,7 @@ const StoreInterface = require('../utils/StoreInterface');
 let io = null;
 
 function initServer(server, options) {
-    io = new Server(server, options);
+    io = Server.listen(server);
 
     io.on('connection', function (socket) {
 
