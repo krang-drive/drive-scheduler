@@ -2,9 +2,7 @@ const Server = require('socket.io');
 const StoreInterface = require('../utils/StoreInterface');
 let io = null;
 
-function initServer(server, options) {
-    io = Server.listen(server);
-
+function initServer(io) {
     io.on('connection', function (socket) {
 
         console.log('someone connected');

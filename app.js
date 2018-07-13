@@ -6,15 +6,16 @@ const logger = require('morgan');
 const apiRouter = require('./routes/api');
 const StoreInterface = require('./utils/StoreInterface');
 const app = express();
-const server = app.listen(8080, function () { console.log("Waiting on 8080.") });
-const io = require('./routes/sockets');
+const socketManager = require('./routes/sockets');
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
 });
-
-io.initServer(server, {origins: '*:*'});
+const server = app.listen(8080, function () { console.log("Waiting on 8080.") });
+const io = require('socket.io').listen(server);
+io.origins('*:*');
+socketManager.initServer(io);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
