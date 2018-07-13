@@ -39,6 +39,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-server.listen(1337, function() {console.log("Waiting on 1337.")});
+app.listen(8080, function() {console.log("Waiting on 8080.")});
 
 module.exports = app;
