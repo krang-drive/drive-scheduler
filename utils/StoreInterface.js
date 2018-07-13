@@ -1,7 +1,5 @@
 const http = require('http');
-const HOST_URL = '';
-const ROUTE_HOST = '127.0.0.1:8080/y';
-const DRIVER_HOST = '127.0.0.1:8080/x';
+const HOST_URL = 'http://127.0.0.1:8080';
 
 const REQUEST_OPTIONS = {
     hostname: HOST_URL,
