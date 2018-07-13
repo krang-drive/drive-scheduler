@@ -7,9 +7,11 @@ const apiRouter = require('./routes/api');
 const StoreInterface = require('./utils/StoreInterface');
 const app = express();
 const socketManager = require('./routes/sockets');
-const cors = require('cors');
-app.use(cors);
-
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 const server = app.listen(8080, function () { console.log("Waiting on 8080.") });
 const io = require('socket.io').listen(server);
 io.origins('*:*', 'localhost:8100', 'http://127.0.0.1:8080', 'http://127.0.0.1:8080:443');
