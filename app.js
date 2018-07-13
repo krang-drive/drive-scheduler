@@ -6,7 +6,7 @@ const logger = require('morgan');
 const apiRouter = require('./routes/api');
 const StoreInterface = require('./utils/StoreInterface');
 const app = express();
-const server = require('http').Server(app);
+const server = app.listen(8080, function () { console.log("Waiting on 8080.") });
 const io = require('./routes/sockets');
 
 io.initServer(server, {origins: '*:*'});
@@ -43,6 +43,5 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.listen(8080, function() {console.log("Waiting on 8080.")});
 
 module.exports = app;
