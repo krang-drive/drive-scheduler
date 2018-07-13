@@ -9,8 +9,8 @@ const mapsClient = require('@google/maps').createClient({
     key: 'AIzaSyDvBuRWTdUQJWhOAbgH2hiMhfUK0bIBgL0'
 });
 
-function rankDrivers(drivers, facilityID, callback){
-    getFacility(facilityID, function(err, facility){
+function rankDrivers(drivers, facilityId, callback){
+    getFacility(facilityId, function(err, facility){
         if(err)
             throw(err);
 
@@ -32,6 +32,25 @@ function rankDrivers(drivers, facilityID, callback){
         callback(queue);
     });
 }
+const queue = new PriorityQueue((a, b) => {return a.dist < b.dist;});
+queue.enq({dist: 25, driver: {name: 'adriano'}});
+queue.enq({dist: 50, driver: {name: 'ali'}});
+queue.enq({dist: 1, driver: {name: 'john'}});
+
+let rroutes = [{
+    driverId: 'adriano',
+    routeId: '12foih12',
+    facilityId: '12341fa',
+    googlemapslink: 'maps.google.com/asohdofew[i]fqwef',
+    bounty: 10
+},
+    {
+        driverId: 'nick',
+        routeId: '12wqer',
+        facilityId: '123sdf',
+        googlemapslink: 'maps.google.com/asohdofew[i]fqwef',
+        bounty: 13
+    }];
 
 function distributeRoutes(driverQueue, routes, sockets){
     const rtd = (driverQueue.length > routes.length) ? routes.length : driverQueue.length;
@@ -41,25 +60,25 @@ function distributeRoutes(driverQueue, routes, sockets){
         let driver = driverQueue.deq();
 
         for(let j = 0; j < sockets.length; j++){
-            if(driver.driverID === sockets[j].driverID){
-                io.to(sockets[j].id).emit('offer', {driverID: driver.driverID, route: routes[i].routeID}, function(){
-                    StoreInterface.postRoutes({status: 'pending'}, routes[i].routeID, function(data){
-                        console.log("Set status of " + routes[i].routeID + " to pending!");
+            if(driver.driverId === sockets[j].driverId){
+                io.to(sockets[j].id).emit('offer', {driverId: driver.driverId, route: routes[i].routeId}, function(){
+                    StoreInterface.postRoutes({status: 'pending'}, routes[i].routeId, function(data){
+                        console.log("Set status of " + routes[i].routeId + " to pending!");
                     });
                 });
 
                 sockets[j].on('accept', function(data){
-                    StoreInterface.postDrivers({routeID: routes[i].routeID},driver.driverID, function(data){
+                    StoreInterface.postDrivers({routeId: routes[i].routeId},driver.driverId, function(data){
                         console.log("Attempted to update the driver status");
                     });
-                    StoreInterface.postRoutes({driverID: driver.driverID}, routes[i].routeID, function(data){
+                    StoreInterface.postRoutes({driverId: driver.driverId}, routes[i].routeId, function(data){
                         console.log("Attempted to update the route status");
                     })
                 });
 
                 function reject(){
-                    StoreInterface.postRoutes({status: 'null'}, routes[i].routeID, function(data){
-                        console.log("Set status of " + routes[i].routeID + " to null!");
+                    StoreInterface.postRoutes({status: 'null'}, routes[i].routeId, function(data){
+                        console.log("Set status of " + routes[i].routeId + " to null!");
                     });
                 }
                 sockets[j].on('reject', reject);
