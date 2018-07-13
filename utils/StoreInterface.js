@@ -15,8 +15,9 @@ const REQUEST_OPTIONS = {
     }
 };
 
-function _getGenericStore(path, callback, id){
+function _getGenericStore(path, callback, id, method, data){
 
+    REQUEST_OPTIONS.method = method;
     REQUEST_OPTIONS.path = (id) ? `${path}/:${id}` : path;
 
     const req = http.request(REQUEST_OPTIONS, function(res){
@@ -35,30 +36,49 @@ function _getGenericStore(path, callback, id){
         });
 
         req.on('error', (err) => console.error(err));
+
+        if(method === 'POST'){
+            const post_data = JSON.stringify(data);
+            req.write(post_data);
+        }
+
         req.end();
     });
 }
 
 function getDrivers(id, callback){
     if(typeof id === 'function')
-        return _getGenericStore('/drivers', id, null);
-    return _getGenericStore('/drivers', callback, id)
+        return _getGenericStore('/drivers', id, null, 'GET');
+    return _getGenericStore('/drivers', callback, id, 'GET');
 }
 
 function getRoutes(id, callback){
     if(typeof id === 'function')
-        return _getGenericStore('/routes', id, null);
-    return _getGenericStore('/routes', callback, id);
+        return _getGenericStore('/routes', id, null, 'GET');
+    return _getGenericStore('/routes', callback, id, 'GET');
 }
 
 function getFacility(id, callback){
     if(typeof id === 'function')
-        return _getGenericStore('/facility', id, null);
-    return _getGenericStore('/facility', callback, id);
+        return _getGenericStore('/facility', id, null, 'GET');
+    return _getGenericStore('/facility', callback, id, 'GET');
 }
 
+function postDrivers(data, id, callback){
+    if(typeof id === 'function')
+        return _getGenericStore('/drivers', id, null, 'POST', data);
+    return _getGenericStore('/drivers', callback, id, 'POST', data);
+}
+
+function postRoutes(data, id, callback){
+    if(typeof id === "function")
+        return _getGenericStore('/routes', id, null, 'POST', data);
+    return _getGenericStore('/routes', callback, id, 'POST', data);
+}
 module.exports = {
     'drivers': getDrivers,
     'routes': getRoutes,
-    'facility': getFacility
+    'facility': getFacility,
+    'postDrivers': postDrivers,
+    'postRoutes': postRoutes
 };
