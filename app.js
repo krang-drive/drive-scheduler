@@ -1,12 +1,15 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const apiRouter = require('./routes/api');
+const StoreInterface = require('./utils/StoreInterface');
+const app = express();
+const server = require('http').Server(app);
+const io = require('./routes/sockets');
 
-var apiRouter = require('./routes/api');
-
-var app = express();
+io.initServer(server, {});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -36,6 +39,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.listen(1337, function() {console.log("Waiting on 1337.")});
+server.listen(1337, function() {console.log("Waiting on 1337.")});
 
 module.exports = app;
